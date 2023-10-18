@@ -1,0 +1,130 @@
+﻿@using StudentManager.Utilities.Dto;
+@using StudentManager.Utilities.Helper;
+@model Pagination<StudentToReturnDto>
+@{
+    ViewData["Title"] = "Students Page ";
+}
+<!-- Modal -->
+<div class="modal fade show" id="deleteResponseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Server Concurrency Alert</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                 A background Process of deleting multiple records is processing in the server. Chages will be affected soon.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="my-2">
+        <div class="d-flex justify-content-between">
+            <div>
+                <form class="input-group" style="width:400px;" method="get">
+                <input type="text" name="search" id="searchInput" value="@Model.Search" class="form-control" placeholder="Search Student" aria-label="Dollar amount (with dot and two decimal places)">
+                <input type="submit" id="submitBtn" style="display: none;">
+                <span onclick="simulateSubmit()" class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+                </form>
+            </div>
+            <div>
+                <button id="selectedDeleteButton" class="btn btn-danger">Delete Selected Items</button>
+                <button id="allItemDeleteButton" class="btn btn-info">Delete All Items</button>
+            </div>
+
+        </div>
+    </div>
+    @if(Model.Count>0)
+    {
+        <table class="table table-bordered border-dark mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Class</th>
+                    <th scope="col">DOB</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col" style="text-align:center;">
+                        Select All <input type="checkbox" id="selectAllInput" />
+                        <span class=" position-relative" style="margin-left:20px; margin-top:20px;" >
+                            
+                            <span id="totalSelectedItems" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+                                
+                                0
+                            </span>
+                        </span>
+                    </th>
+                    <th scope="col" class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var student in Model.Data)
+                {
+                    <tr>
+                        <td>@student.Name</td>
+                        <td>@student.Class</td>
+                        <td>@student.DOB.ToString("yyyy-MM-dd") </td>
+                        <td>@student.Gender</td>
+                        <td style="text-align:center;">
+                            <input class="scheckbox" id="@student.Id" style="width:40px; padding:200px;" type="checkbox" />
+                        </td>
+                        <td class="text-center">
+                            <a asp-controller="Students" asp-action="Edit" asp-route-id="@student.Id" class="text-info">Edit</a>
+                            <span class="text-success">|</span>
+                            <a asp-controller="Students" asp-action="Details" asp-route-id="@student.Id" class="text-success">Details</a>
+                            <span class="text-success">|</span>
+                            <a asp-controller="Students" asp-action="Delete" asp-route-id="@student.Id" class="text-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h1 class="text-center">No Record Found</h1>
+    }
+    @if(Model.Count>Model.PageSize)
+    {
+        <nav aria-label="Page navigation example">
+            <ul class="pagination text-center" style="width:max-content; margin:auto;">
+                @if (Model.Count > Model.PageSize && Model.PageIndex!=1)
+                {
+                    <li class="page-item"><a class="page-link" href="?PageIndex=@(Model.PageIndex-1)&Search=@Model.Search">Previous</a></li>
+                }
+                @if (Model.Count / (Model.PageSize * (Model.PageIndex + 1)) > 0)
+                {
+                    <li class="page-item"><a class="page-link" href="?PageIndex=@(Model.PageIndex+1)&Search=@Model.Search">@(Model.PageIndex + 1)</a></li>
+                }
+                @if (Model.Count / (Model.PageSize * (Model.PageIndex+2)) > 0)
+                {
+                    <li class="page-item"><a class="page-link" href="?PageIndex=@(Model.PageIndex+2)&Search=@Model.Search">@(Model.PageIndex + 2)</a></li>
+                }
+
+                @if(Model.Count/Model.PageIndex>Model.PageSize)
+                {
+                    <li class="page-item"><a class="page-link" href="?PageIndex=@(Model.PageIndex+1)&Search=@Model.Search">Next</a></li>
+                }
+            </ul>
+        </nav>
+    }
+</div>
+<script>
+    const queryParams = new URLSearchParams(window.location.search);
+
+    // Get the value of a specific query parameter (e.g., 'name')
+    
+
+    function simulateSubmit() {
+        // Trigger a click event on the actual submit button
+        document.getElementById("submitBtn").click();
+    }
+</script>
+@section Scripts{
+    <script src="~/js/deleteMultiple.js" ></script>
+}

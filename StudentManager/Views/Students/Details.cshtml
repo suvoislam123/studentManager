@@ -1,0 +1,31 @@
+﻿@model StudentManager.Utilities.Dto.StudentToReturnDto
+@{
+    ViewData["Title"] = "Student Details";
+}
+<div>
+    <table class="table table-bordered border-dark mt-3">
+        <h1 class="text-center">Student Details</h1>
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">@Model.Name</th>
+
+            </tr>
+            <tr>
+                <th scope="col">Class</th>
+                <th scope="col">@Model.Class</th>
+            </tr>
+            <tr>
+                <th scope="col">Gender</th>
+                <th scope="col">@ViewData["gender"]</th>
+            </tr>
+            <tr>
+                <th scope="col">Date of Birth</th>
+                <th scope="col">@Model.DOB</th>
+            </tr>
+
+            
+        </thead>
+        
+    </table>
+</div>
