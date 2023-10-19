@@ -131,11 +131,10 @@ function deleteMultipleRecords()
             localStorage.setItem('guidList',JSON.stringify(emptyArr));
             controlSelectButton();
             //window.location.reload();
-            //document.getElementById('deleteResponseModal').classList.add('show');
-            var myModal = new bootstrap.Modal(document.getElementById('deleteResponseModal'), {
+            var deletingModal = new bootstrap.Modal(document.getElementById('deleteResponseModal'), {
                 keyboard: false
             });
-            myModal.show();
+            deletingModal.show();
             return response;
         }
         throw new Error('Network response was not ok.');

@@ -64,7 +64,7 @@ namespace StudentManager.BackgroundServices
                     {
                         // Handle error or continue to the next record
                     }
-                    Thread.Sleep(1000);
+                    Thread.Sleep(4000);
                 }
 
                 await dbContext.SaveChangesAsync(cancellationToken);
